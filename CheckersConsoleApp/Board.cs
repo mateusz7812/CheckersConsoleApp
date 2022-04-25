@@ -114,13 +114,35 @@ public class Board
         return Pawns.FirstOrDefault(p => p.Position == position);
     }
 
-    public void MakeMove(Move move)
+
+    public List<Move> GetAvailableMoves(GameSide side)
+    {
+        var availableMoves = this.Pawns
+            .FindAll(p => p.Side == side)
+            .SelectMany(this.GetMovesForPawn)
+            .ToList();
+        
+        return availableMoves;
+    }
+
+    public Board MakeMove(Move move)
     {
         var pawn = PawnAt(move.From)!;
         pawn.Position = move.To;
         if (((pawn.Side == GameSide.Black && pawn.Position.Item2 == 0)
-            || (pawn.Side == GameSide.White && pawn.Position.Item2 == 7)) && 
+             || (pawn.Side == GameSide.White && pawn.Position.Item2 == 7)) && 
             Math.Abs(move.From.Item1 - move.To.Item1) == 1)
             pawn.IsQueen = true;
+        var positionsBetween = PositionsBetween(move);
+        foreach (var position in positionsBetween)
+        {
+            this.TakeIfHas(position);
+        }
+        return this;
+    }
+
+    public Board Clone()
+    {
+        return new Board(Pawns.Select(p => p.Clone()).ToList(), Taken.Select(t => t.Clone()).ToList());
     }
 }

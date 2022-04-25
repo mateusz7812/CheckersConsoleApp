@@ -2,7 +2,6 @@
 using CheckersConsoleApp;
 
 Game game = new Game(
-        new BoardGenerator(), 
         new List<IPlayer>()
         {
                 new ConsolePlayer{Side = GameSide.Black}, 

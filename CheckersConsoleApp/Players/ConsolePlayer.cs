@@ -37,12 +37,16 @@ public class ConsolePlayer: IPlayer
         return availableMovesForPawn[choose];
     }
 
-    public void AnnounceWinner(GameSide gameSide)
+    public void AnnounceWinner(GameSide? gameSide)
     {
         if (winnerAnnounced)
             return; 
         Console.Clear();
-        Console.WriteLine($"{gameSide} is the winner");
+        Console.WriteLine(
+            gameSide is null 
+            ? "Draw" 
+            : $"{gameSide} is the winner"
+        );
         winnerAnnounced = true;
     }
 
