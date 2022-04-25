@@ -1,3 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿
+using CheckersConsoleApp;
 
-Console.WriteLine("Hello, World!");
+Game game = new Game(
+        new BoardGenerator(), 
+        new List<IPlayer>()
+        {
+                new ConsolePlayer{Side = GameSide.Black}, 
+                new ConsolePlayer{Side = GameSide.White}
+        });
+
+game.Run();

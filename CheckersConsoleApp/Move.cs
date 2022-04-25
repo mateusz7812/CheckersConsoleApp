@@ -2,6 +2,13 @@
 
 public class Move
 {
-    public (int, int) From { get; init; }
-    public (int, int) To { get; init; }
+    public Move((int, int) @from, (int, int) to)
+    {
+        From = @from;
+        To = to;
+    }
+
+    public (int, int) From { get; }
+    public (int, int) To { get; }
+    public bool Taking { get; set; } = false;
 }

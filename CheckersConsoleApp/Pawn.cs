@@ -1,8 +1,14 @@
 ﻿namespace CheckersConsoleApp;
 
-public enum Pawn
+public class Pawn
 {
-    Empty = 0,
-    White = 1,
-    Black = 2
+    public Pawn(GameSide side, (int, int) position)
+    {
+        Side = side;
+        Position = position;
+    }
+
+    public bool IsQueen { get; set; } = false;
+    public GameSide Side { get; }
+    public (int, int) Position { get; set; }
 }
