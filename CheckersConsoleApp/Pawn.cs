@@ -17,4 +17,9 @@ public class Pawn
     {
         return new Pawn(Side, (Position.Item1, Position.Item2), IsQueen);
     }
+
+    public override string ToString()
+    {
+        return $"{Side} {Position} {IsQueen}";
+    }  
 }

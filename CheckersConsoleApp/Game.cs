@@ -1,4 +1,6 @@
-﻿namespace CheckersConsoleApp;
+﻿using CheckersConsoleApp.Moves;
+
+namespace CheckersConsoleApp;
 
 public class Game
 {
@@ -19,61 +21,39 @@ public class Game
             foreach (var player in Players)
             {
                 Move move;
-                do
+                if (!(win is null && draw == false))
                 {
-                    List<Move> availableMoves = Board.GetAvailableMoves(player.Side);
-                    if (!availableMoves.Any())
-                    {
-                        win = (int) GameSide.Black + (int) GameSide.White - player.Side;
-                        break;
-                    }
+                    Console.WriteLine("first");
+                    break;
+                }
+                List<Move> availableMoves = Board.GetAvailableMoves(player.Side);
+                if (!availableMoves.Any())
+                {
+                    Console.WriteLine("Second");
+                    win = (int) GameSide.Black + (int) GameSide.White - player.Side;
+                    break;
+                }
 
-                    if (Board.Pawns.Any(p => p.IsQueen && p.Side == GameSide.Black)
-                        && Board.Pawns.Any(p => p.IsQueen && p.Side == GameSide.White))
-                        queenMovesCounter++;
-                    if (queenMovesCounter > 15)
-                    {
-                        win = null;
-                        draw = true;
-                        break;
-                    }
-
-                    if (availableMoves.Count == 1)
-                        move = availableMoves[0];
-                    else
-                    {
-                        if (availableMoves.Any(m => m.Taking))
-                        {
-                            var availableTakes = availableMoves.Where(m => m.Taking);
-                            var availableTakesWithRates = availableTakes.Select(take =>
-                                (
-                                    take,
-                                    CountTakes(Board.PawnAt(take.From)!.Side, take, Board)
-                                )
-                            );
-                            move = availableTakesWithRates.OrderByDescending(t => t.Item2).First().Item1;
-                        }
-                        else
-                            move = player.GetMove(Board, availableMoves);
-                    }
-
-                    Board = Board.MakeMove(move);
-                } while (move.Taking);
+                if (Board.Pawns.Any(p => p.IsQueen && p.Side == GameSide.Black)
+                    && Board.Pawns.Any(p => p.IsQueen && p.Side == GameSide.White))
+                    queenMovesCounter++;
+                if (queenMovesCounter > 15)
+                {
+                    Console.WriteLine("third");
+                    win = null;
+                    draw = true;
+                    break;
+                }
+                
+                move = player.GetMove(Board, availableMoves);
+                //Console.WriteLine($"{move.From} {move.To} {move.Taking}");
+                Board.MakeMove(move, true);
             }
         }
 
         foreach (var player in Players)
         {
-            player.AnnounceWinner(win);
+            player.AnnounceWinner(win, Board);
         }
-    }
-
-    private int CountTakes(GameSide side, Move move, Board board)
-    {
-        var boardCopy = board.Clone();
-        boardCopy.MakeMove(move);
-        var takes = boardCopy.GetAvailableMoves(side).Where(m => m.Taking);
-        var counts = takes.Select(t => CountTakes(side, t, boardCopy)).DefaultIfEmpty(0);
-        return 1 + counts.Max();
     }
 }

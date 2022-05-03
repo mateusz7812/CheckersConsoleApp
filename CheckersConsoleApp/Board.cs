@@ -1,4 +1,7 @@
-﻿namespace CheckersConsoleApp;
+﻿using System.Text;
+using CheckersConsoleApp.Moves;
+
+namespace CheckersConsoleApp;
 
 public class Board
 {
@@ -78,14 +81,25 @@ public class Board
                (move.From.Item2 > move.To.Item2) && (pawn.Side == GameSide.White))) 
             return false;
 
-        var pawnsBetween = PositionsBetween(move).Select(PawnAt).ToList();
-        //Console.WriteLine($"{move.From} {move.To} {pawnsBetween.Count}");
+        var positionsBetween = PositionsBetween(move);
+        var pawnsBetween = positionsBetween.Select(PawnAt).Where(n => n is not null).ToList();
+        if (pawnsBetween.Count > 1)
+            return false;
+        if (pawnsBetween.Any())
+        {
+            if (PositionsBetween(new Move(pawnsBetween[0]!.Position, move.To)).Count != 0)
+            {
+                return false;
+            }
+        }
         if (pawnsBetween.Any(p => p != null && p.Side == side))
             return false;
-        
-        if(!pawn.IsQueen && pawnsBetween.Any())
-            if (!pawnsBetween.Any(p => (p != null && p.Side != side)))
+
+        if (!pawn.IsQueen)
+        {
+            if (!pawnsBetween.Any() && positionsBetween.Any())
                 return false;
+        }
         if (pawnsBetween.Any())
             move.Taking = true;
         return true;
@@ -121,28 +135,110 @@ public class Board
             .FindAll(p => p.Side == side)
             .SelectMany(this.GetMovesForPawn)
             .ToList();
+        if (availableMoves.Count == 1) 
+            return availableMoves;
+        if (!availableMoves.Any(m => m.Taking)) 
+            return availableMoves;
         
-        return availableMoves;
+        var availableTakes = availableMoves.Where(m => m.Taking).ToList();
+        var availableTakesWithRates = availableTakes.Select(take =>
+            (
+                take,
+                CountTakes(PawnAt(take.From)!.Side, take)
+            )
+        ).ToList();
+        var orderByDescending = availableTakesWithRates.OrderByDescending(t => t.Item2).ToList();
+        return orderByDescending
+            .TakeWhile(o => o.Item2 == orderByDescending.First().Item2)
+            .Select(i => i.Item1)
+            .ToList();
     }
 
-    public Board MakeMove(Move move)
+    public Pawn MakeMove(Move move, bool real = false)
+    {
+        MakeSingleMove(move);
+
+        var pawn = PawnAt(move.To)!;
+        var nextMoves = GetAvailableMoves(pawn.Side);
+        if (nextMoves.Count != 1) 
+            return pawn;
+        var nextMove = nextMoves[0];
+        if (move.Taking && nextMove.Taking)
+        {
+            if(real)
+                Console.WriteLine($"combo: {move.To} {nextMove.To}");
+            MakeMove(nextMove);
+        }
+        return pawn;
+    }
+
+    private void MakeSingleMove(Move move)
     {
         var pawn = PawnAt(move.From)!;
         pawn.Position = move.To;
         if (((pawn.Side == GameSide.Black && pawn.Position.Item2 == 0)
-             || (pawn.Side == GameSide.White && pawn.Position.Item2 == 7)) && 
+             || (pawn.Side == GameSide.White && pawn.Position.Item2 == 7)) &&
             Math.Abs(move.From.Item1 - move.To.Item1) == 1)
             pawn.IsQueen = true;
-        var positionsBetween = PositionsBetween(move);
-        foreach (var position in positionsBetween)
+        if (move.Taking)
         {
-            this.TakeIfHas(position);
+            var positionsBetween = PositionsBetween(move);
+            foreach (var position in positionsBetween)
+            {
+                TakeIfHas(position);
+            }
         }
-        return this;
     }
 
     public Board Clone()
     {
         return new Board(Pawns.Select(p => p.Clone()).ToList(), Taken.Select(t => t.Clone()).ToList());
+    }
+
+    public int CountTakes(GameSide side, Move move)
+    {
+        var boardCopy = Clone();
+        boardCopy.MakeSingleMove(move);
+        var availableMoves = boardCopy.GetAvailableMoves(side);
+        var takes = availableMoves.Where(m => m.Taking).ToList();
+        var counts = takes.Select(t => boardCopy.CountTakes(side, t)).DefaultIfEmpty(0).ToList();
+        return 1 + counts.Max();
+    }
+
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append(" ");
+        Enumerable.Range(0, 8).ToList().ForEach(n => builder.AppendFormat($"  {n}"));
+        builder.AppendLine();
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (j == 0)
+                {
+                    builder.Append(7-i);
+                }
+
+                var pawn = PawnAt((j, 7-i));
+                String fieldSymbol;
+                if (pawn == null)
+                {
+                    fieldSymbol = ".";
+                }
+                else
+                {
+                    var sideName = pawn.Side.ToString();
+                    if (!pawn.IsQueen)
+                        sideName = sideName.ToLower();
+                    fieldSymbol = sideName[0].ToString();
+                }
+
+                builder.AppendFormat($"  {fieldSymbol}");
+            }
+
+            builder.AppendLine();
+        }
+        return builder.ToString();
     }
 }
