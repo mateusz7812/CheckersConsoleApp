@@ -1,0 +1,44 @@
+﻿<Page x:Class="CheckersWpfApp.MenuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CheckersWpfApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MenuPage">
+
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button 
+                x:Name="AIvsAIButton" 
+                Content="AI vs AI" 
+                Click="AIvsAIButton_Click"
+                Margin="20"
+                Padding="10"
+            />
+            <Button 
+                x:Name="GuivsAIButton" 
+                Content="Gui vs AI" 
+                Click="GuiVsAIButton_Click"
+                Margin="20"
+                Padding="10"
+            />
+            <Button 
+                x:Name="GuiVsConsoleButton" 
+                Content="Gui Vs Console" 
+                Click="GuiVsConsole_Click"
+                Margin="20"
+                Padding="10"
+            />
+            <Button 
+                x:Name="ExitButton" 
+                Content="Exit" 
+                Click="Exit_Click"
+                Margin="20"
+                Padding="10"
+            />
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,6 +1,9 @@
-﻿namespace CheckersConsoleApp.RatingStrategies;
-
-public interface IRatingStrategy
+﻿namespace CheckersConsoleApp.RatingStrategies
 {
-    int Rate(Board board, GameSide side);
+
+    public interface IRatingStrategy
+    {
+        int Rate(Board board);
+    }
+
 }

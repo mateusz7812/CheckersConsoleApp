@@ -1,9 +1,13 @@
-﻿namespace CheckersConsoleApp.RatingStrategies;
+﻿using System.Linq;
 
-public class PawnCountStrategy: IRatingStrategy
-{
-    public int Rate(Board board, GameSide side)
+namespace CheckersConsoleApp.RatingStrategies
+{ 
+
+    public class PawnCountStrategy: IRatingStrategy
     {
-        return board.Pawns.Count(p => p.Side == side) / board.Pawns.Count(p => p.Side != side);
+        public int Rate(Board board)
+        {
+            return board.Pawns.Count(p => p.Side == GameSide.White) / board.Pawns.Count(p => p.Side == GameSide.Black);
+        }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace CheckersConsoleApp;
-
-public enum GameSide
+﻿namespace CheckersConsoleApp
 {
-    White = 0,
-    Black = 1
+
+    public enum GameSide
+    {
+        White = 0,
+        Black = 1
+    }
 }

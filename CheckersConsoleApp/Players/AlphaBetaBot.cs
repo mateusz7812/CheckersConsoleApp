@@ -8,7 +8,7 @@ using CheckersConsoleApp.RatingStrategies;
 namespace CheckersConsoleApp.Players
 {
 
-    public class MinMaxBot : Bot
+    public class AlphaBetaBot : Bot
     {
         Stopwatch _stopwatch = new Stopwatch();
         private List<long> _timeList = new List<long>();
@@ -57,11 +57,12 @@ namespace CheckersConsoleApp.Players
                 )!;
         }
 
-        public MinMaxBot(IRatingStrategy ratingStrategy, GameSide side, int level)
+        public AlphaBetaBot(IRatingStrategy ratingStrategy, GameSide side, int level)
             : base(ratingStrategy, side)
         {
             Level = level;
         }
+
 
     }
 }

@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckersConsoleApp", "CheckersConsoleApp\CheckersConsoleApp.csproj", "{3D031DC7-CA97-4A73-A796-492CBE154931}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckersConsoleApp", "CheckersConsoleApp\CheckersConsoleApp.csproj", "{3D031DC7-CA97-4A73-A796-492CBE154931}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckersWpfApp", "CheckersWpfApp\CheckersWpfApp.csproj", "{5D9C6243-E82D-45FB-9553-4C2BA356EB43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{3D031DC7-CA97-4A73-A796-492CBE154931}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D031DC7-CA97-4A73-A796-492CBE154931}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D031DC7-CA97-4A73-A796-492CBE154931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D9C6243-E82D-45FB-9553-4C2BA356EB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D9C6243-E82D-45FB-9553-4C2BA356EB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D9C6243-E82D-45FB-9553-4C2BA356EB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D9C6243-E82D-45FB-9553-4C2BA356EB43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9E2A51A-DC5F-4F3D-A91B-E689F6547CD4}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CheckersWpfApp/obj
+/.idea/.idea.CheckersConsoleApp/.idea
+/.vs/CheckersConsoleApp
+/CheckersConsoleApp/bin/Debug/net5.0-windows
+/CheckersConsoleApp/obj
+/CheckersWpfApp/bin/Debug/net5.0-windows

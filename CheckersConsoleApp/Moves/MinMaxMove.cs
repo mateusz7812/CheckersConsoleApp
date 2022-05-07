@@ -1,11 +1,13 @@
-﻿namespace CheckersConsoleApp.Moves;
-
-public class MinMaxMove: Move
+﻿namespace CheckersConsoleApp.Moves
 {
-    public MinMaxMove(Move move, int rating) : base(move.From, move.To, move.Taking)
+
+    public class MinMaxMove : Move
     {
-        Rating = rating;
+        public MinMaxMove(Move move, int rating) : base(move.From, move.To, move.Taking)
+        {
+            Rating = rating;
+        }
+
+        public int Rating { get; set; }
     }
-    
-    public int Rating { get; set; }
 }

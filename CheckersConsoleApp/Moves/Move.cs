@@ -1,20 +1,21 @@
-﻿namespace CheckersConsoleApp.Moves;
-
-public class Move
+﻿namespace CheckersConsoleApp.Moves
 {
-    public Move((int, int) @from, (int, int) to, bool moveTaking = false)
+    public class Move
     {
-        From = @from;
-        To = to;
-        Taking = moveTaking;
-    }
+        public Move((int, int) @from, (int, int) to, bool moveTaking = false)
+        {
+            From = @from;
+            To = to;
+            Taking = moveTaking;
+        }
 
-    public (int, int) From { get; }
-    public (int, int) To { get; }
-    public bool Taking { get; set; } = false;
+        public (int, int) From { get; }
+        public (int, int) To { get; }
+        public bool Taking { get; set; } = false;
 
-    public override string ToString()
-    {
-        return $"{From}=>{To} {Taking}";
+        public override string ToString()
+        {
+            return $"{From}=>{To} {Taking}";
+        }
     }
 }

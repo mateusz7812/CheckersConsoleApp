@@ -1,9 +1,13 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using CheckersConsoleApp.Moves;
 
-namespace CheckersConsoleApp;
+namespace CheckersConsoleApp
+{
 
-public class Board
+    public class Board
 {
     public Board(List<Pawn> pawns, List<Pawn>? taken = null)
     {
@@ -14,11 +18,11 @@ public class Board
     public List<Pawn> Pawns { get; }
     public List<Pawn> Taken { get; }
 
-    public static Board Initial = new (new List<Pawn>()
+    public static Board Initial = new(new List<Pawn>()
     {
-        new (GameSide.Black, (1, 7)), new (GameSide.Black, (3, 7)), new (GameSide.Black, (5, 7)), new (GameSide.Black, (7, 7)), 
+        new (GameSide.Black, (1, 7)), new (GameSide.Black, (3, 7)), new (GameSide.Black, (5, 7)), new (GameSide.Black, (7, 7)),
         new (GameSide.Black, (0, 6)), new (GameSide.Black, (2, 6)), new (GameSide.Black, (4, 6)), new (GameSide.Black, (6, 6)),
-        new (GameSide.White, (0, 0)), new (GameSide.White, (2, 0)), new (GameSide.White, (4, 0)), new (GameSide.White, (6, 0)), 
+        new (GameSide.White, (0, 0)), new (GameSide.White, (2, 0)), new (GameSide.White, (4, 0)), new (GameSide.White, (6, 0)),
         new (GameSide.White, (1, 1)), new (GameSide.White, (3, 1)), new (GameSide.White, (5, 1)), new (GameSide.White, (7, 1))
     });
 
@@ -65,7 +69,7 @@ public class Board
 
     private bool IsMoveCorrect(GameSide side, Move move)
     {
-        if (move.To.Item1 is < 0 or > 7 
+        if (move.To.Item1 is < 0 or > 7
             || move.To.Item2 is < 0 or > 7)
             return false;
         var diffX = move.To.Item1 - move.From.Item1;
@@ -75,10 +79,10 @@ public class Board
         }
 
         var pawn = PawnAt(move.From)!;
-        if(!pawn.IsQueen 
-           && Math.Abs(diffX) == 1 
-           && ((move.From.Item2 < move.To.Item2) && (pawn.Side == GameSide.Black) || 
-               (move.From.Item2 > move.To.Item2) && (pawn.Side == GameSide.White))) 
+        if (!pawn.IsQueen
+           && Math.Abs(diffX) == 1
+           && ((move.From.Item2 < move.To.Item2) && (pawn.Side == GameSide.Black) ||
+               (move.From.Item2 > move.To.Item2) && (pawn.Side == GameSide.White)))
             return false;
 
         var positionsBetween = PositionsBetween(move);
@@ -87,7 +91,7 @@ public class Board
             return false;
         if (pawnsBetween.Any())
         {
-            if (PositionsBetween(new Move(pawnsBetween[0]!.Position, move.To)).Count != 0)
+            if (PositionsBetween(new Move(pawnsBetween [0]!.Position, move.To)).Count != 0)
             {
                 return false;
             }
@@ -135,11 +139,11 @@ public class Board
             .FindAll(p => p.Side == side)
             .SelectMany(this.GetMovesForPawn)
             .ToList();
-        if (availableMoves.Count == 1) 
+        if (availableMoves.Count == 1)
             return availableMoves;
-        if (!availableMoves.Any(m => m.Taking)) 
+        if (!availableMoves.Any(m => m.Taking))
             return availableMoves;
-        
+
         var availableTakes = availableMoves.Where(m => m.Taking).ToList();
         var availableTakesWithRates = availableTakes.Select(take =>
             (
@@ -160,12 +164,12 @@ public class Board
 
         var pawn = PawnAt(move.To)!;
         var nextMoves = GetAvailableMoves(pawn.Side);
-        if (nextMoves.Count != 1) 
+        if (nextMoves.Count() != 1)
             return pawn;
-        var nextMove = nextMoves[0];
+        var nextMove = nextMoves [0];
         if (move.Taking && nextMove.Taking)
         {
-            if(real)
+            if (real)
                 Console.WriteLine($"combo: {move.To} {nextMove.To}");
             MakeMove(nextMove);
         }
@@ -217,10 +221,10 @@ public class Board
             {
                 if (j == 0)
                 {
-                    builder.Append(7-i);
+                    builder.Append(7 - i);
                 }
 
-                var pawn = PawnAt((j, 7-i));
+                var pawn = PawnAt((j, 7 - i));
                 String fieldSymbol;
                 if (pawn == null)
                 {
@@ -231,7 +235,7 @@ public class Board
                     var sideName = pawn.Side.ToString();
                     if (!pawn.IsQueen)
                         sideName = sideName.ToLower();
-                    fieldSymbol = sideName[0].ToString();
+                    fieldSymbol = sideName [0].ToString();
                 }
 
                 builder.AppendFormat($"  {fieldSymbol}");
@@ -240,5 +244,6 @@ public class Board
             builder.AppendLine();
         }
         return builder.ToString();
-    }
+    } 
+}
 }
